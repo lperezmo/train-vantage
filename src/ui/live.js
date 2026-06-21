@@ -44,7 +44,7 @@ function showNotConfigured(reason) {
     banner.innerHTML =
       '<span class="dot"></span>' +
       '<span>No live radio detector is configured yet, so live alarms are not wired in yet. ' +
-      'Train Vantage is showing the map, the history, and the history-based odds.</span>';
+      'This app is showing the map, the history, and the history-based odds.</span>';
     banner.hidden = false;
   }
   const detail = el('live-detail');

@@ -56,8 +56,8 @@ export function initAbout(meta) {
       : 'self-reported blocked-crossing reports';
 
   host.innerHTML =
-    '<h3>What Train Vantage is</h3>' +
-    '<p>Train Vantage is a freight-train information map for Pendleton, Oregon. The Union Pacific ' +
+    '<h3>What this is</h3>' +
+    '<p>This is a freight-train information map for Pendleton, Oregon. The Union Pacific ' +
     'La Grande Subdivision runs right through the middle of town, so a single long train can block ' +
     'several downtown street crossings at once and split the town in two. This app maps ' + escapeHtml(crossTxt) +
     ', shows where the trouble spots are, and estimates the odds that a train is blocking downtown ' +
