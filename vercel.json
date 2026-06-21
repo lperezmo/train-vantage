@@ -3,6 +3,9 @@
   "framework": "vite",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/volunteer", "destination": "/volunteer.html" }
+  ],
   "functions": {
     "api/tiles.js": {
       "maxDuration": 30
