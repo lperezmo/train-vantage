@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Train Vantage - Volunteer detector listener (experimental)</title>
+    <style>
+      :root {
+        --bg: #0c1116; --panel: #141b22; --panel-2: #1b2530; --line: #243240;
+        --text: #dce6f0; --muted: #7e94a8; --accent: #38bdf8; --accent-2: #22d3ee;
+        --warning: #f5a623; --good: #22c55e; --danger: #ef4444;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.5; }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
+      h1 { color: var(--accent); font-size: 22px; margin: 0 0 4px; }
+      .tag { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+      .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin: 14px 0; }
+      h2 { font-size: 14px; color: var(--accent-2); margin: 0 0 8px; }
+      p { font-size: 13px; margin: 8px 0; }
+      code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+      button {
+        background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
+        border-radius: 8px; padding: 10px 14px; font-size: 13px; cursor: pointer; margin: 4px 6px 4px 0;
+      }
+      button:hover:not(:disabled) { border-color: var(--accent); }
+      button:disabled { opacity: .5; cursor: default; }
+      .status { font-size: 12px; color: var(--muted); margin: 10px 0; min-height: 18px; }
+      .out { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 12px; white-space: pre-wrap; word-break: break-word; min-height: 40px; }
+      .warn { color: var(--warning); }
+      label { font-size: 12px; color: var(--muted); display: block; margin: 8px 0 4px; }
+      input[type="text"] { width: 100%; background: var(--panel-2); border: 1px solid var(--line); color: var(--text); border-radius: 6px; padding: 8px; font-size: 12px; }
+      a { color: var(--accent-2); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Volunteer detector listener</h1>
+      <p class="tag">Experimental, opt-in. Runs speech-to-text in your browser. Nothing here is required to use Train Vantage.</p>
+
+      <div class="card">
+        <h2>What this does</h2>
+        <p>If you have a radio scanner tuned to the Union Pacific defect detectors on <code>160.410 MHz</code>
+          playing into this device, this page can transcribe each detector call in your browser, parse it,
+          and submit the detection to help the live layer. It downloads a small speech model
+          (about thirty megabytes) the first time you start, and that runs entirely on your machine.</p>
+        <p class="warn">Honest caveats: accuracy on noisy scanner audio is hit or miss, the model download is
+          one-time but not tiny, and submissions only count when the app has a detection store configured.
+          The supported and more reliable path is the local watchtower scripts.</p>
+      </div>
+
+      <div class="card">
+        <h2>Try it</h2>
+        <p>This captures your microphone, so point a scanner speaker at it (or feed audio in). Click start,
+          let it listen, then stop to transcribe and parse the most recent audio.</p>
+        <button id="start" type="button">Start listening</button>
+        <button id="stop" type="button" disabled>Stop and transcribe</button>
+        <div class="status" id="status">Idle.</div>
+
+        <label for="detector">Detector id (optional, helps tag the submission)</label>
+        <input id="detector" type="text" placeholder="e.g. 10701" />
+
+        <p style="margin-top:12px;">Transcript:</p>
+        <div class="out" id="transcript"></div>
+        <p style="margin-top:12px;">Parsed detection:</p>
+        <div class="out" id="parsed"></div>
+
+        <button id="submit" type="button" disabled style="margin-top:12px;">Submit detection</button>
+        <div class="status" id="submitStatus"></div>
+      </div>
+
+      <div class="card">
+        <h2>Prefer the local script path?</h2>
+        <p>Run the watchtower pipeline (RTL-SDR on 160.410 MHz, Whisper, parser, ETA, push) from the
+          <code>watchtower/</code> folder. It is the supported route and handles capture for you.</p>
+        <p><a href="/">Back to the map</a></p>
+      </div>
+    </div>
+
+    <script type="module">
+      // Self-contained: the heavy transformers.js library is dynamically imported
+      // from a pinned CDN only when the user opts in, so it never touches the main
+      // app bundle. The parser below is a direct port of watchtower/parse.py.
+
+      const TRANSFORMERS_CDN = "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2";
+
+      // --- detector-call parser (port of parse.py) ---------------------------
+      const DIGIT_WORDS = { zero:"0", oh:"0", o:"0", one:"1", two:"2", three:"3", four:"4", five:"5", six:"6", seven:"7", eight:"8", nine:"9" };
+      const TENS = { ten:10, eleven:11, twelve:12, thirteen:13, fourteen:14, fifteen:15, sixteen:16, seventeen:17, eighteen:18, nineteen:19, twenty:20, thirty:30, forty:40, fifty:50, sixty:60, seventy:70, eighty:80, ninety:90 };
+      const ONES = { one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9 };
+
+      function normalize(text) {
+        return String(text || "").toLowerCase().replace(/-/g, " ").replace(/[^a-z0-9. ]+/g, " ").replace(/\s+/g, " ").trim();
+      }
+      function spokenDigits(tokens) {
+        const out = []; let saw = false;
+        for (const tok of tokens) {
+          if (tok === "point" || tok === "decimal") { out.push("."); saw = true; }
+          else if (DIGIT_WORDS[tok] !== undefined) { out.push(DIGIT_WORDS[tok]); saw = true; }
+          else break;
+        }
+        if (!saw) return null;
+        const s = out.join("");
+        return (s === "." || s === "") ? null : s;
+      }
+      function wordsToInt(tokens) {
+        let total = 0, used = false, i = 0;
+        while (i < tokens.length) {
+          const w = tokens[i];
+          if (TENS[w] !== undefined) {
+            total += TENS[w]; used = true;
+            if (i + 1 < tokens.length && ONES[tokens[i + 1]] !== undefined && TENS[w] % 10 === 0 && TENS[w] >= 20) { total += ONES[tokens[i + 1]]; i++; }
+            i++;
+          } else if (ONES[w] !== undefined) { total = total * 10 + ONES[w]; used = true; i++; }
+          else break;
+        }
+        return used ? total : null;
+      }
+      function findMilepost(text) {
+        const toks = text.split(" ");
+        for (let i = 0; i < toks.length; i++) {
+          const tok = toks[i];
+          let start = -1;
+          if (tok === "milepost" || tok === "mp") start = i + 1;
+          else if (tok === "mile" && toks[i + 1] === "post") start = i + 2;
+          if (start >= 0) {
+            const rest = toks.slice(start, start + 8);
+            if (rest[0] && /^\d+(\.\d+)?$/.test(rest[0])) {
+              if (rest.length >= 3 && (rest[1] === "point" || rest[1] === "decimal") && /^\d+$/.test(rest[2])) return parseFloat(rest[0] + "." + rest[2]);
+              return parseFloat(rest[0]);
+            }
+            const spoken = spokenDigits(rest);
+            if (spoken !== null) { const v = parseFloat(spoken); if (!Number.isNaN(v)) return v; }
+          }
+        }
+        const m = text.match(/\bmp\s*(\d+(?:\.\d+)?)/);
+        return m ? parseFloat(m[1]) : null;
+      }
+      function findTrack(text) {
+        const toks = text.split(" ");
+        for (let i = 0; i < toks.length; i++) {
+          if (toks[i] === "track" && i + 1 < toks.length) {
+            const n = toks[i + 1];
+            if (/^\d+$/.test(n)) return parseInt(n, 10);
+            if (ONES[n] !== undefined) return ONES[n];
+            if (n === "main" || n === "single") return 1;
+          }
+        }
+        return null;
+      }
+      function findSpeed(text) {
+        const toks = text.split(" ");
+        for (let i = 0; i < toks.length; i++) {
+          if (toks[i] === "speed" && i + 1 < toks.length) {
+            if (/^\d+$/.test(toks[i + 1])) return parseInt(toks[i + 1], 10);
+            const v = wordsToInt(toks.slice(i + 1, i + 4));
+            if (v !== null) return v;
+          }
+        }
+        const m = text.match(/(\d+)\s+(?:miles per hour|mph|mile per hour)/);
+        return m ? parseInt(m[1], 10) : null;
+      }
+      function findAxles(text) {
+        const toks = text.split(" ");
+        for (let i = 0; i < toks.length; i++) {
+          if (toks[i] === "axles" || toks[i] === "axle") {
+            if (i + 1 < toks.length && /^\d+$/.test(toks[i + 1])) return parseInt(toks[i + 1], 10);
+            const after = wordsToInt(toks.slice(i + 1, i + 5));
+            if (after !== null) return after;
+            if (i - 1 >= 0 && /^\d+$/.test(toks[i - 1])) return parseInt(toks[i - 1], 10);
+          }
+        }
+        return null;
+      }
+      function findDefect(text) {
+        if (/\bno (?:defect|defects|alarm|alarms|exception|exceptions|problems)\b/.test(text)) return false;
+        if (/\b(?:integrity failure|defect|defects|alarm|alarms|hot box|dragging equipment|hot wheel)\b/.test(text)) return true;
+        return false;
+      }
+      function parseCall(raw) {
+        const norm = normalize(raw);
+        return { milepost: findMilepost(norm), track: findTrack(norm), axles: findAxles(norm), speed_mph: findSpeed(norm), defect: findDefect(norm), raw_text: String(raw || "").trim() };
+      }
+      // ETA model (port of eta.py).
+      function direction(mp, ref = 215.5) { if (mp == null) return "unknown"; if (mp < ref) return "eastbound"; if (mp > ref) return "westbound"; return "at downtown"; }
+      function etaMin(mp, speed, ref = 215.5) {
+        if (mp == null || speed == null || speed <= 0) return null;
+        return Math.round((Math.abs(ref - mp) / speed * 60) * 10) / 10;
+      }
+
+      // --- audio capture + in-browser whisper --------------------------------
+      const statusEl = document.getElementById("status");
+      const transcriptEl = document.getElementById("transcript");
+      const parsedEl = document.getElementById("parsed");
+      const submitStatusEl = document.getElementById("submitStatus");
+      const startBtn = document.getElementById("start");
+      const stopBtn = document.getElementById("stop");
+      const submitBtn = document.getElementById("submit");
+
+      let mediaRecorder = null;
+      let chunks = [];
+      let lastParsed = null;
+
+      function setStatus(s) { statusEl.textContent = s; }
+
+      startBtn.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          chunks = [];
+          mediaRecorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+          mediaRecorder.start();
+          setStatus("Listening. Click stop when a detector call has played.");
+          startBtn.disabled = true; stopBtn.disabled = false;
+        } catch (e) {
+          setStatus("Could not access the microphone: " + e.message);
+        }
+      });
+
+      stopBtn.addEventListener("click", async () => {
+        if (!mediaRecorder) return;
+        stopBtn.disabled = true;
+        setStatus("Loading speech model (first time downloads about thirty megabytes)...");
+        const done = new Promise((resolve) => { mediaRecorder.onstop = resolve; });
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach((t) => t.stop());
+        await done;
+
+        try {
+          const blob = new Blob(chunks, { type: "audio/webm" });
+          const arrayBuf = await blob.arrayBuffer();
+
+          // Decode to mono Float32 at 16 kHz for whisper.
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+          const decoded = await audioCtx.decodeAudioData(arrayBuf.slice(0));
+          const samples = decoded.getChannelData(0);
+
+          setStatus("Transcribing in your browser...");
+          const { pipeline } = await import(TRANSFORMERS_CDN);
+          const transcriber = await pipeline("automatic-speech-recognition", "Xenova/whisper-tiny.en");
+          const result = await transcriber(samples);
+          const text = (result && result.text ? result.text : "").trim();
+          transcriptEl.textContent = text || "(no speech recognized)";
+
+          lastParsed = parseCall(text);
+          const dir = direction(lastParsed.milepost);
+          const eta = etaMin(lastParsed.milepost, lastParsed.speed_mph);
+          lastParsed.direction = dir;
+          lastParsed.eta_downtown_min = eta;
+          parsedEl.textContent = JSON.stringify(lastParsed, null, 2);
+
+          submitBtn.disabled = lastParsed.milepost == null;
+          setStatus("Done. Review the parse" + (lastParsed.milepost == null ? " (no milepost found, cannot submit)." : " and submit if it looks right."));
+        } catch (e) {
+          setStatus("Transcription failed: " + e.message);
+        } finally {
+          startBtn.disabled = false;
+        }
+      });
+
+      submitBtn.addEventListener("click", async () => {
+        if (!lastParsed) return;
+        const detectorId = (document.getElementById("detector").value || "volunteer").trim();
+        const payload = {
+          detector_id: detectorId,
+          milepost: lastParsed.milepost,
+          speed_mph: lastParsed.speed_mph,
+          axles: lastParsed.axles,
+          direction: lastParsed.direction,
+          defect: lastParsed.defect,
+          eta_downtown_min: lastParsed.eta_downtown_min,
+          raw_text: lastParsed.raw_text,
+          detected_at: new Date().toISOString(),
+        };
+        submitStatusEl.textContent = "Submitting...";
+        try {
+          const res = await fetch("/api/ingest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (res.status === 401) {
+            submitStatusEl.textContent = "Submission needs an ingest token. This volunteer page submits anonymously, so the operator must enable a public ingest path. Your parse is shown above either way.";
+          } else if (res.status === 503) {
+            submitStatusEl.textContent = "The app has no detection store configured yet, so there is nothing to submit to. Your parse is shown above.";
+          } else if (res.ok) {
+            submitStatusEl.textContent = "Submitted. Thank you.";
+          } else {
+            submitStatusEl.textContent = "Submit failed: HTTP " + res.status;
+          }
+        } catch (e) {
+          submitStatusEl.textContent = "Submit failed: " + e.message;
+        }
+      });
+    </script>
+  </body>
+</html>

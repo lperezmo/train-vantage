@@ -1,0 +1,18 @@
+{
+  "name": "train-vantage",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Pendleton, Oregon freight-train information: grade crossings, the UP La Grande Subdivision, wayside defect detectors, historical blocked-crossing patterns, and a history-based probability of a train blocking downtown right now.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "maplibre-gl": "^4.7.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

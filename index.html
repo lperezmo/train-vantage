@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content="Pendleton, Oregon freight-train information: grade crossings, the UP La Grande Subdivision, wayside defect detectors, historical blocked-crossing patterns, and a history-based estimate of whether a train is blocking downtown right now." />
+    <title>Train Vantage - Pendleton freight-train info</title>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div id="sidebar">
+      <header>
+        <h1>Train&nbsp;Vantage</h1>
+        <p class="tag">Pendleton freight-train crossings, history, and odds</p>
+      </header>
+
+      <!-- Layer 3: discreet live-status banner. Populated by src/ui/live.js. -->
+      <div id="live-banner" class="live-banner" hidden></div>
+
+      <!-- Layer 2 headline: history-based "is a train blocking downtown now?" -->
+      <section id="now-card" class="now-card" hidden>
+        <div class="now-head">
+          <span class="now-title">Chance a train is blocking downtown right now</span>
+          <span id="now-gauge" class="now-gauge">--</span>
+        </div>
+        <div class="now-bar"><div id="now-fill" class="now-fill"></div></div>
+        <p id="now-detail" class="now-detail"></p>
+        <p class="now-foot">History-based estimate, not a live observation.</p>
+      </section>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-tab="map">Map</button>
+        <button class="tab" data-tab="history">History</button>
+        <button class="tab" data-tab="live">Live &amp; ETA</button>
+        <button class="tab" data-tab="about">About</button>
+      </nav>
+
+      <!-- MAP tab: layer toggles + legend -->
+      <section class="tabpane" data-pane="map">
+        <p class="hint">The Union Pacific La Grande Subdivision runs through downtown Pendleton and splits the town. Toggle what to show.</p>
+        <label class="chk"><input type="checkbox" id="t-crossings" checked /> Grade crossings</label>
+        <label class="chk"><input type="checkbox" id="t-downtown" checked /> Highlight downtown at-grade cluster</label>
+        <label class="chk"><input type="checkbox" id="t-railline" checked /> Rail line (UP La Grande Sub)</label>
+        <label class="chk"><input type="checkbox" id="t-detectors" checked /> Wayside defect detectors</label>
+        <label class="chk"><input type="checkbox" id="t-mileposts" /> Mileposts</label>
+        <div id="map-legend" class="map-legend"></div>
+        <div id="crossing-info" class="info-box" hidden></div>
+      </section>
+
+      <!-- HISTORY tab: charts populated by src/ui/charts.js -->
+      <section class="tabpane" data-pane="history" hidden>
+        <div id="history-summary" class="hist-summary"></div>
+        <div id="charts"></div>
+      </section>
+
+      <!-- LIVE & ETA tab -->
+      <section class="tabpane" data-pane="live" hidden>
+        <div id="live-detail"></div>
+        <div id="eta-table"></div>
+      </section>
+
+      <!-- ABOUT tab -->
+      <section class="tabpane" data-pane="about" hidden>
+        <div id="about"></div>
+      </section>
+
+      <footer>
+        <p class="attr" id="attr"></p>
+        <p class="disc">Self-reported blocked-crossing reports are unverified and used here for historical patterns only, not as live train status. Defect-detector positions and the rail line are from public data. This app does not provide live train positions by default.</p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

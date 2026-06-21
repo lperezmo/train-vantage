@@ -1,0 +1,120 @@
+{
+  "type": "FeatureCollection",
+  "source": "NTAD Rail Mileposts FeatureServer (ArcGIS), La Grande Subdivision, Pendleton bbox",
+  "source_url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/NTAD_Rail_Mileposts/FeatureServer/0",
+  "count": 7,
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.87678873,
+          45.65804255
+        ]
+      },
+      "properties": {
+        "milepost": 211,
+        "subdivision": "LA GRANDE",
+        "lat": 45.65804255,
+        "lng": -118.87678873
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.85838488,
+          45.66516289
+        ]
+      },
+      "properties": {
+        "milepost": 212,
+        "subdivision": "LA GRANDE",
+        "lat": 45.66516289,
+        "lng": -118.85838488
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.8405258,
+          45.67214977
+        ]
+      },
+      "properties": {
+        "milepost": 213,
+        "subdivision": "LA GRANDE",
+        "lat": 45.67214977,
+        "lng": -118.8405258
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.82049556,
+          45.67333504
+        ]
+      },
+      "properties": {
+        "milepost": 214,
+        "subdivision": "LA GRANDE",
+        "lat": 45.67333504,
+        "lng": -118.82049556
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.80162861,
+          45.66786271
+        ]
+      },
+      "properties": {
+        "milepost": 215,
+        "subdivision": "LA GRANDE",
+        "lat": 45.66786271,
+        "lng": -118.80162861
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.78178068,
+          45.67047239
+        ]
+      },
+      "properties": {
+        "milepost": 216,
+        "subdivision": "LA GRANDE",
+        "lat": 45.67047239,
+        "lng": -118.78178068
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.76227541,
+          45.67445571
+        ]
+      },
+      "properties": {
+        "milepost": 217,
+        "subdivision": "LA GRANDE",
+        "lat": 45.67445571,
+        "lng": -118.76227541
+      }
+    }
+  ]
+}

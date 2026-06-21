@@ -1,0 +1,422 @@
+{
+  "source": "UP La Grande Subdivision defect detectors, extracted from AAR/UP detector directory",
+  "downtown_reference_mp": 215.5,
+  "count": 24,
+  "key_detector_ids": [
+    "10700",
+    "10701",
+    "10702",
+    "10703",
+    "10704"
+  ],
+  "detectors": [
+    {
+      "detector_id": "10705",
+      "milepost": 188.6,
+      "location": "Stanfield",
+      "lat": 45.781667,
+      "lng": -119.224959,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "eastbound",
+      "dist_to_downtown_mi": 26.9,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 26.9,
+        "direction_text": "eastbound, computed from milepost delta",
+        "eta_note": "Approx 26.9 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10704",
+      "milepost": 194.9,
+      "location": "Echo",
+      "lat": 45.713197,
+      "lng": -119.156191,
+      "frequency": "160.4100",
+      "functions": "DED-HBD-HWD",
+      "direction_caught": "eastbound",
+      "dist_to_downtown_mi": 20.6,
+      "key": true,
+      "heads_up": {
+        "distance_mi": 20.6,
+        "direction_text": "eastbound, approaching from east",
+        "eta_note": "Train detected here gives ~20.6 mi lead time to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10703",
+      "milepost": 207.1,
+      "location": "Rieth",
+      "lat": 45.653688,
+      "lng": -118.948957,
+      "frequency": "160.4100",
+      "functions": "DED-HBD",
+      "direction_caught": "eastbound",
+      "dist_to_downtown_mi": 8.4,
+      "key": true,
+      "heads_up": {
+        "distance_mi": 8.4,
+        "direction_text": "eastbound, approaching from east",
+        "eta_note": "Train detected here gives ~8.4 mi lead time to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10702",
+      "milepost": 211.1,
+      "location": "Rieth",
+      "lat": 45.658782,
+      "lng": -118.875005,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "eastbound",
+      "dist_to_downtown_mi": 4.4,
+      "key": true,
+      "heads_up": {
+        "distance_mi": 4.4,
+        "direction_text": "eastbound, approaching from east",
+        "eta_note": "Train detected here gives ~4.4 mi lead time to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10701",
+      "milepost": 221.9,
+      "location": "Mission",
+      "lat": 45.669442,
+      "lng": -118.66406,
+      "frequency": "160.4100",
+      "functions": "DED-HBD",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 6.4,
+      "key": true,
+      "heads_up": {
+        "distance_mi": 6.4,
+        "direction_text": "westbound, approaching from west",
+        "eta_note": "Train detected here gives ~6.4 mi lead time to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10700",
+      "milepost": 240.7,
+      "location": "Bonifer",
+      "lat": 45.662717,
+      "lng": -118.363887,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 25.2,
+      "key": true,
+      "heads_up": {
+        "distance_mi": 25.2,
+        "direction_text": "westbound, approaching from west",
+        "eta_note": "Train detected here gives ~25.2 mi lead time to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10699",
+      "milepost": 243.7,
+      "location": "Bonifer",
+      "lat": 45.620754,
+      "lng": -118.353871,
+      "frequency": "160.4100",
+      "functions": "DED-HBD",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 28.2,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 28.2,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 28.2 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10698",
+      "milepost": 251.4,
+      "location": "Duncan",
+      "lat": 45.523604,
+      "lng": -118.286507,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 35.9,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 35.9,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 35.9 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10697",
+      "milepost": 252.4,
+      "location": "Camp",
+      "lat": 45.510555,
+      "lng": -118.28117,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 36.9,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 36.9,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 36.9 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10696",
+      "milepost": 253.7,
+      "location": "Camp",
+      "lat": 45.492687,
+      "lng": -118.278262,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 38.2,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 38.2,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 38.2 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10695",
+      "milepost": 255.8,
+      "location": "Camp",
+      "lat": 45.478796,
+      "lng": -118.301302,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 40.3,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 40.3,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 40.3 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10694",
+      "milepost": 256.8,
+      "location": "Camp",
+      "lat": 45.485652,
+      "lng": -118.31855,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 41.3,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 41.3,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 41.3 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10693",
+      "milepost": 259.8,
+      "location": "Meacham",
+      "lat": 45.521134,
+      "lng": -118.343356,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 44.3,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 44.3,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 44.3 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10692",
+      "milepost": 260.9,
+      "location": "Meacham",
+      "lat": 45.532644,
+      "lng": -118.35608,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 45.4,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 45.4,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 45.4 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10691",
+      "milepost": 262.1,
+      "location": "Meacham",
+      "lat": 45.525679,
+      "lng": -118.378856,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 46.6,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 46.6,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 46.6 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10690",
+      "milepost": 264.0,
+      "location": "Meacham",
+      "lat": 45.516285,
+      "lng": -118.405202,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 48.5,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 48.5,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 48.5 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10689",
+      "milepost": 269.1,
+      "location": "Kamela",
+      "lat": 45.457535,
+      "lng": -118.417784,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 53.6,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 53.6,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 53.6 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10684",
+      "milepost": 270.2,
+      "location": "Kamela",
+      "lat": 45.44365,
+      "lng": -118.404276,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 54.7,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 54.7,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 54.7 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10683",
+      "milepost": 273.3,
+      "location": "Nordeen",
+      "lat": 45.411274,
+      "lng": -118.364857,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 57.8,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 57.8,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 57.8 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10682",
+      "milepost": 276.3,
+      "location": "Motanic",
+      "lat": 45.37705,
+      "lng": -118.331807,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 60.8,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 60.8,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 60.8 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10681",
+      "milepost": 278.8,
+      "location": "Motanic",
+      "lat": 45.371965,
+      "lng": -118.288257,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 63.3,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 63.3,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 63.3 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10680",
+      "milepost": 280.3,
+      "location": "Railroad Canyon",
+      "lat": 45.364947,
+      "lng": -118.260924,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 64.8,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 64.8,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 64.8 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10679",
+      "milepost": 284.4,
+      "location": "Perry",
+      "lat": 45.354865,
+      "lng": -118.190358,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 68.9,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 68.9,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 68.9 mi to downtown MP 215.5"
+      }
+    },
+    {
+      "detector_id": "10678",
+      "milepost": 289.1,
+      "location": "La Grande",
+      "lat": 45.34057,
+      "lng": -118.110689,
+      "frequency": "160.4100",
+      "functions": "DED",
+      "direction_caught": "westbound",
+      "dist_to_downtown_mi": 73.6,
+      "key": false,
+      "heads_up": {
+        "distance_mi": 73.6,
+        "direction_text": "westbound, computed from milepost delta",
+        "eta_note": "Approx 73.6 mi to downtown MP 215.5"
+      }
+    }
+  ]
+}
