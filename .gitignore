@@ -62,3 +62,5 @@ watchtower/clips/
 # Planning notes: keep only the README in version control
 *.md
 !README.md
+
+.vercel
