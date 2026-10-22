@@ -36,7 +36,7 @@ function describe(d) {
   return cap + ' train detected at ' + where + ', ' + eta + '.';
 }
 
-function showNotConfigured(reason) {
+function showNotConfigured(_reason) {
   const banner = el('live-banner');
   if (banner) {
     banner.classList.remove('active');
@@ -119,7 +119,7 @@ function showConfigured(detections, opts) {
     list.forEach((d) => {
       try {
         map.showLiveTrain(d);
-      } catch (e) {
+      } catch {
         // A bad row must not break the rest.
       }
     });
@@ -134,7 +134,7 @@ export async function initLive(opts) {
       if (res && res.ok) {
         data = await res.json();
       }
-    } catch (e) {
+    } catch {
       data = null;
     }
 
@@ -144,7 +144,7 @@ export async function initLive(opts) {
     }
 
     showConfigured(data.detections, opts);
-  } catch (e) {
+  } catch {
     // Last-resort safety: fall back to the subtle banner, never throw.
     try {
       showNotConfigured();

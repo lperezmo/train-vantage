@@ -85,7 +85,7 @@ export async function proxyLive(req, res) {
     const rows = await resp.json();
     const detections = Array.isArray(rows) ? rows : [];
     sendJson(res, 200, { ok: true, configured: true, detections });
-  } catch (e) {
+  } catch {
     // Degrade gracefully: keep the app working with the subtle banner.
     sendJson(res, 200, {
       ok: true,
