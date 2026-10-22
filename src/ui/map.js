@@ -25,22 +25,30 @@ function makeMarker(className, lng, lat, text) {
 
 function esc(v) {
   if (v == null) return '';
-  return String(v)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function crossingPopupHtml(c) {
   const dt = c.downtown ? 'yes' : 'no';
   const mp = c.milepost ? esc(c.milepost) : 'n/a';
   return (
-    '<strong>' + esc(c.street || 'Grade crossing') + '</strong><br/>' +
-    'ID ' + esc(c.id) + '<br/>' +
-    'Milepost ' + mp + '<br/>' +
-    'Position: ' + esc(c.position || 'n/a') + '<br/>' +
-    'Type: ' + esc(c.type || 'n/a') + '<br/>' +
-    'Downtown: ' + dt
+    '<strong>' +
+    esc(c.street || 'Grade crossing') +
+    '</strong><br/>' +
+    'ID ' +
+    esc(c.id) +
+    '<br/>' +
+    'Milepost ' +
+    mp +
+    '<br/>' +
+    'Position: ' +
+    esc(c.position || 'n/a') +
+    '<br/>' +
+    'Type: ' +
+    esc(c.type || 'n/a') +
+    '<br/>' +
+    'Downtown: ' +
+    dt
   );
 }
 
@@ -48,25 +56,49 @@ function crossingInfoHtml(c) {
   const dt = c.downtown ? 'yes' : 'no';
   const mp = c.milepost ? esc(c.milepost) : 'n/a';
   return (
-    '<h3>' + esc(c.street || 'Grade crossing') + '</h3>' +
-    '<div><span class="k">Crossing ID:</span> ' + esc(c.id) + '</div>' +
-    '<div><span class="k">Milepost:</span> ' + mp + '</div>' +
-    '<div><span class="k">Position:</span> ' + esc(c.position || 'n/a') + '</div>' +
-    '<div><span class="k">Type:</span> ' + esc(c.type || 'n/a') + '</div>' +
-    '<div><span class="k">Railroad:</span> ' + esc(c.railroad || 'n/a') + '</div>' +
-    '<div><span class="k">Downtown at-grade:</span> ' + dt + '</div>'
+    '<h3>' +
+    esc(c.street || 'Grade crossing') +
+    '</h3>' +
+    '<div><span class="k">Crossing ID:</span> ' +
+    esc(c.id) +
+    '</div>' +
+    '<div><span class="k">Milepost:</span> ' +
+    mp +
+    '</div>' +
+    '<div><span class="k">Position:</span> ' +
+    esc(c.position || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Type:</span> ' +
+    esc(c.type || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Railroad:</span> ' +
+    esc(c.railroad || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Downtown at-grade:</span> ' +
+    dt +
+    '</div>'
   );
 }
 
 function detectorPopupHtml(d) {
   const hu = d.heads_up || {};
   return (
-    '<strong>Defect detector ' + esc(d.detector_id) + '</strong><br/>' +
-    esc(d.location || '') + '<br/>' +
-    'Milepost ' + esc(d.milepost) + '<br/>' +
-    'Frequency: ' + esc(d.frequency || 'n/a') + '<br/>' +
-    'Functions: ' + esc(d.functions || 'n/a') + '<br/>' +
-    'Direction caught: ' + esc(d.direction_caught || 'n/a') +
+    '<strong>Defect detector ' +
+    esc(d.detector_id) +
+    '</strong><br/>' +
+    esc(d.location || '') +
+    '<br/>' +
+    'Milepost ' +
+    esc(d.milepost) +
+    '<br/>' +
+    'Frequency: ' +
+    esc(d.frequency || 'n/a') +
+    '<br/>' +
+    'Functions: ' +
+    esc(d.functions || 'n/a') +
+    '<br/>' +
+    'Direction caught: ' +
+    esc(d.direction_caught || 'n/a') +
     (hu.eta_note ? '<br/>' + esc(hu.eta_note) : '')
   );
 }
@@ -74,12 +106,24 @@ function detectorPopupHtml(d) {
 function detectorInfoHtml(d) {
   const hu = d.heads_up || {};
   return (
-    '<h3>Defect detector ' + esc(d.detector_id) + '</h3>' +
-    '<div><span class="k">Location:</span> ' + esc(d.location || 'n/a') + '</div>' +
-    '<div><span class="k">Milepost:</span> ' + esc(d.milepost) + '</div>' +
-    '<div><span class="k">Frequency:</span> ' + esc(d.frequency || 'n/a') + '</div>' +
-    '<div><span class="k">Functions:</span> ' + esc(d.functions || 'n/a') + '</div>' +
-    '<div><span class="k">Direction caught:</span> ' + esc(d.direction_caught || 'n/a') + '</div>' +
+    '<h3>Defect detector ' +
+    esc(d.detector_id) +
+    '</h3>' +
+    '<div><span class="k">Location:</span> ' +
+    esc(d.location || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Milepost:</span> ' +
+    esc(d.milepost) +
+    '</div>' +
+    '<div><span class="k">Frequency:</span> ' +
+    esc(d.frequency || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Functions:</span> ' +
+    esc(d.functions || 'n/a') +
+    '</div>' +
+    '<div><span class="k">Direction caught:</span> ' +
+    esc(d.direction_caught || 'n/a') +
+    '</div>' +
     (d.key ? '<div><span class="k">Key detector:</span> yes (used for ETA)</div>' : '') +
     (hu.eta_note ? '<div><span class="k">Heads up:</span> ' + esc(hu.eta_note) + '</div>' : '')
   );
@@ -94,7 +138,9 @@ function buildLegend() {
     '<div class="lg-item"><i style="background:#f5a623;width:16px;height:16px"></i> Downtown at-grade crossing</div>' +
     '<div class="lg-item"><i style="border-radius:3px;background:#08151c;border:2px solid #22d3ee"></i> Defect detector</div>' +
     '<div class="lg-item"><i style="border-radius:3px;background:#22d3ee"></i> Key detector (used for ETA)</div>' +
-    '<div class="lg-item"><i style="border-radius:0;width:18px;height:4px;background:' + acc + '"></i> UP La Grande Sub rail line</div>';
+    '<div class="lg-item"><i style="border-radius:0;width:18px;height:4px;background:' +
+    acc +
+    '"></i> UP La Grande Sub rail line</div>';
 }
 
 export async function setupMap(data) {
@@ -193,7 +239,8 @@ export async function setupMap(data) {
       const lng = coords ? coords[0] : f.properties && f.properties.lng;
       const lat = coords ? coords[1] : f.properties && f.properties.lat;
       if (!Number.isFinite(lng) || !Number.isFinite(lat)) continue;
-      const label = 'MP ' + ((f.properties && f.properties.milepost) != null ? f.properties.milepost : '?');
+      const label =
+        'MP ' + ((f.properties && f.properties.milepost) != null ? f.properties.milepost : '?');
       const marker = makeMarker('mk-milepost', lng, lat, label);
       milepostMarkers.push({ marker });
     }
@@ -214,9 +261,15 @@ export async function setupMap(data) {
     }
   }
   // Crossings and detectors start on the map already.
-  crossingMarkers.forEach((e) => { e.marker._onMap = true; });
-  detectorMarkers.forEach((e) => { e.marker._onMap = true; });
-  milepostMarkers.forEach((e) => { e.marker._onMap = false; });
+  crossingMarkers.forEach((e) => {
+    e.marker._onMap = true;
+  });
+  detectorMarkers.forEach((e) => {
+    e.marker._onMap = true;
+  });
+  milepostMarkers.forEach((e) => {
+    e.marker._onMap = false;
+  });
 
   function applyCrossings() {
     const showCrossings = !!(document.getElementById('t-crossings') || {}).checked;
@@ -294,7 +347,9 @@ export async function setupMap(data) {
         'width:18px;height:18px;border-radius:50%;background:#22c55e;' +
         'border:3px solid #08151c;box-shadow:0 0 0 3px rgba(34,197,94,.45),0 1px 4px rgba(0,0,0,.6);' +
         'cursor:pointer;';
-      liveMarker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(coords).addTo(map);
+      liveMarker = new maplibregl.Marker({ element: el, anchor: 'center' })
+        .setLngLat(coords)
+        .addTo(map);
     } else {
       liveMarker.setLngLat(coords);
       if (!liveMarker._onMap) liveMarker.addTo(map);
@@ -303,8 +358,8 @@ export async function setupMap(data) {
     if (detection && (detection.label || detection.eta_note)) {
       liveMarker.setPopup(
         new maplibregl.Popup({ offset: 12 }).setHTML(
-          '<strong>Live train</strong><br/>' + esc(detection.label || detection.eta_note)
-        )
+          '<strong>Live train</strong><br/>' + esc(detection.label || detection.eta_note),
+        ),
       );
     }
     return liveMarker;

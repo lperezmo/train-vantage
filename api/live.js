@@ -61,9 +61,7 @@ export async function proxyLive(req, res) {
 
   try {
     const base = url.replace(/\/+$/, '');
-    const endpoint =
-      base +
-      '/rest/v1/detections?select=*&order=detected_at.desc&limit=10';
+    const endpoint = base + '/rest/v1/detections?select=*&order=detected_at.desc&limit=10';
 
     const resp = await fetch(endpoint, {
       method: 'GET',

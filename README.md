@@ -47,15 +47,15 @@ patterns, not live train position. The app says so clearly in the UI.
 
 Charts rendered from the history:
 
-| Chart | What it shows |
-|---|---|
-| Most-reported crossings | Top crossings by report count, labeled Downtown / Private / Other |
-| Reports by hour of day | 24-bar SVG histogram; peak hour highlighted |
-| Reports by day of week | Which days have the most reports |
-| Reports by month | Seasonal pattern across all years |
-| How long blockages lasted | Duration bucket distribution (0-15 min through 8+ hr) |
-| Reported reasons | Top 5 reasons given by reporters |
-| When reports cluster (day x hour) | 7x24 likelihood heatmap (Mon-Sun by 0-23 hr) |
+| Chart                             | What it shows                                                     |
+| --------------------------------- | ----------------------------------------------------------------- |
+| Most-reported crossings           | Top crossings by report count, labeled Downtown / Private / Other |
+| Reports by hour of day            | 24-bar SVG histogram; peak hour highlighted                       |
+| Reports by day of week            | Which days have the most reports                                  |
+| Reports by month                  | Seasonal pattern across all years                                 |
+| How long blockages lasted         | Duration bucket distribution (0-15 min through 8+ hr)             |
+| Reported reasons                  | Top 5 reasons given by reporters                                  |
+| When reports cluster (day x hour) | 7x24 likelihood heatmap (Mon-Sun by 0-23 hr)                      |
 
 The "Chance a train is blocking downtown right now" gauge at the top of the sidebar
 blends the hourly frequency from the history with a day-of-week factor. It refreshes
@@ -102,13 +102,13 @@ farther detectors carry wider error bars.
 
 The five key detectors and their heads-up ranges to downtown (MP 215.5):
 
-| ID | Location | MP | Direction | Dist (mi) | Heads-up range |
-|---|---|---|---|---|---|
-| 10701 | Mission | 221.9 | westbound | 6.4 | ~10-15 min |
-| 10702 | Rieth | 211.1 | eastbound | 4.4 | ~7-11 min |
-| 10703 | Rieth | 207.1 | eastbound | 8.4 | ~13-20 min |
-| 10704 | Echo | 194.9 | eastbound | 20.6 | ~31-49 min |
-| 10700 | Bonifer | 240.7 | westbound | 25.2 | ~38-60 min |
+| ID    | Location | MP    | Direction | Dist (mi) | Heads-up range |
+| ----- | -------- | ----- | --------- | --------- | -------------- |
+| 10701 | Mission  | 221.9 | westbound | 6.4       | ~10-15 min     |
+| 10702 | Rieth    | 211.1 | eastbound | 4.4       | ~7-11 min      |
+| 10703 | Rieth    | 207.1 | eastbound | 8.4       | ~13-20 min     |
+| 10704 | Echo     | 194.9 | eastbound | 20.6      | ~31-49 min     |
+| 10700 | Bonifer  | 240.7 | westbound | 25.2      | ~38-60 min     |
 
 **When a live detection store is configured**, the `/api/live` serverless function
 reads the ten most recent rows from a Supabase `detections` table and returns them to
@@ -288,6 +288,7 @@ the detector call (the same grammar as parse.py), and lets you submit the detect
 `/api/ingest`.
 
 Honest caveats:
+
 - It downloads roughly 30 MB on first use (the model is cached by the browser after that).
 - Accuracy on noisy scanner audio is hit or miss.
 - Submissions only reach the detection store when the app has Supabase and an ingest

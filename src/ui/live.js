@@ -27,8 +27,7 @@ function escapeHtml(s) {
 function describe(d) {
   // Build a short human summary of a detection row.
   const dir = d && d.direction ? String(d.direction) : 'a train';
-  const where =
-    d && d.milepost != null ? 'MP ' + escapeHtml(d.milepost) : 'a detector';
+  const where = d && d.milepost != null ? 'MP ' + escapeHtml(d.milepost) : 'a detector';
   const eta =
     d && Number.isFinite(Number(d.eta_downtown_min))
       ? 'about ' + Math.round(Number(d.eta_downtown_min)) + ' min to downtown'
@@ -84,19 +83,15 @@ function showConfigured(detections, opts) {
   const latest = list[0];
   if (banner) {
     banner.classList.add('active');
-    banner.innerHTML =
-      '<span class="dot"></span><span>' + escapeHtml(describe(latest)) + '</span>';
+    banner.innerHTML = '<span class="dot"></span><span>' + escapeHtml(describe(latest)) + '</span>';
     banner.hidden = false;
   }
 
   const items = list
     .map((d) => {
-      const when =
-        d && d.detected_at ? escapeHtml(d.detected_at) : 'recently';
+      const when = d && d.detected_at ? escapeHtml(d.detected_at) : 'recently';
       const defect =
-        d && d.defect
-          ? ' <strong style="color:var(--warning);">defect flagged</strong>'
-          : '';
+        d && d.defect ? ' <strong style="color:var(--warning);">defect flagged</strong>' : '';
       return (
         '<li style="margin:6px 0;line-height:1.4;">' +
         escapeHtml(describe(d)) +
