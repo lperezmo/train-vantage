@@ -5,7 +5,10 @@
 // Returns an object: { map, showLiveTrain }. The raw MapLibre instance is on
 // .map; main.js calls map.map.resize() when the map tab becomes visible.
 
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+
+maplibregl.setWorkerUrl(mapWorkerUrl);
 
 const CENTER = [-118.7886, 45.6721];
 const ZOOM = 13.2;
