@@ -1,0 +1,2 @@
+# Written by scripts/fetch_*.py; formatting them would fight the next fetch.
+public/data/*.json

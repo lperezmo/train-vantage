@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content="Pendleton, Oregon freight-train information: grade crossings, the UP La Grande Subdivision, wayside defect detectors, historical blocked-crossing patterns, and a history-based estimate of whether a train is blocking downtown right now." />
+    <meta
+      name="description"
+      content="Pendleton, Oregon freight-train information: grade crossings, the UP La Grande Subdivision, wayside defect detectors, historical blocked-crossing patterns, and a history-based estimate of whether a train is blocking downtown right now."
+    />
     <title>Train Crossings in Pendleton</title>
   </head>
   <body>
@@ -39,11 +42,23 @@
 
       <!-- MAP tab: layer toggles + legend -->
       <section class="tabpane" data-pane="map">
-        <p class="hint">The Union Pacific La Grande Subdivision runs through downtown Pendleton and splits the town. Toggle what to show.</p>
-        <label class="chk"><input type="checkbox" id="t-crossings" checked /> Grade crossings</label>
-        <label class="chk"><input type="checkbox" id="t-downtown" checked /> Highlight downtown at-grade cluster</label>
-        <label class="chk"><input type="checkbox" id="t-railline" checked /> Rail line (UP La Grande Sub)</label>
-        <label class="chk"><input type="checkbox" id="t-detectors" checked /> Wayside defect detectors</label>
+        <p class="hint">
+          The Union Pacific La Grande Subdivision runs through downtown Pendleton and splits the
+          town. Toggle what to show.
+        </p>
+        <label class="chk"
+          ><input type="checkbox" id="t-crossings" checked /> Grade crossings</label
+        >
+        <label class="chk"
+          ><input type="checkbox" id="t-downtown" checked /> Highlight downtown at-grade
+          cluster</label
+        >
+        <label class="chk"
+          ><input type="checkbox" id="t-railline" checked /> Rail line (UP La Grande Sub)</label
+        >
+        <label class="chk"
+          ><input type="checkbox" id="t-detectors" checked /> Wayside defect detectors</label
+        >
         <label class="chk"><input type="checkbox" id="t-mileposts" /> Mileposts</label>
         <div id="map-legend" class="map-legend"></div>
         <div id="crossing-info" class="info-box" hidden></div>
@@ -68,7 +83,11 @@
 
       <footer>
         <p class="attr" id="attr"></p>
-        <p class="disc">Self-reported blocked-crossing reports are unverified and used here for historical patterns only, not as live train status. Defect-detector positions and the rail line are from public data. This app does not provide live train positions by default.</p>
+        <p class="disc">
+          Self-reported blocked-crossing reports are unverified and used here for historical
+          patterns only, not as live train status. Defect-detector positions and the rail line are
+          from public data. This app does not provide live train positions by default.
+        </p>
       </footer>
     </div>
 

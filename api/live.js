@@ -61,9 +61,7 @@ export async function proxyLive(req, res) {
 
   try {
     const base = url.replace(/\/+$/, '');
-    const endpoint =
-      base +
-      '/rest/v1/detections?select=*&order=detected_at.desc&limit=10';
+    const endpoint = base + '/rest/v1/detections?select=*&order=detected_at.desc&limit=10';
 
     const resp = await fetch(endpoint, {
       method: 'GET',
@@ -87,7 +85,7 @@ export async function proxyLive(req, res) {
     const rows = await resp.json();
     const detections = Array.isArray(rows) ? rows : [];
     sendJson(res, 200, { ok: true, configured: true, detections });
-  } catch (e) {
+  } catch {
     // Degrade gracefully: keep the app working with the subtle banner.
     sendJson(res, 200, {
       ok: true,

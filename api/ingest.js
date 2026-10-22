@@ -38,7 +38,7 @@ async function readBody(req) {
   if (typeof req.body === 'string' && req.body.length) {
     try {
       return JSON.parse(req.body);
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -49,7 +49,7 @@ async function readBody(req) {
   if (!chunks.length) return {};
   try {
     return JSON.parse(Buffer.concat(chunks).toString('utf8'));
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -127,7 +127,7 @@ export default async function handler(req, res) {
     }
 
     sendJson(res, 200, { ok: true });
-  } catch (e) {
+  } catch {
     sendJson(res, 502, { ok: false, reason: 'detection store unreachable' });
   }
 }

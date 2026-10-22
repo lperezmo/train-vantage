@@ -47,15 +47,15 @@ patterns, not live train position. The app says so clearly in the UI.
 
 Charts rendered from the history:
 
-| Chart | What it shows |
-|---|---|
-| Most-reported crossings | Top crossings by report count, labeled Downtown / Private / Other |
-| Reports by hour of day | 24-bar SVG histogram; peak hour highlighted |
-| Reports by day of week | Which days have the most reports |
-| Reports by month | Seasonal pattern across all years |
-| How long blockages lasted | Duration bucket distribution (0-15 min through 8+ hr) |
-| Reported reasons | Top 5 reasons given by reporters |
-| When reports cluster (day x hour) | 7x24 likelihood heatmap (Mon-Sun by 0-23 hr) |
+| Chart                             | What it shows                                                     |
+| --------------------------------- | ----------------------------------------------------------------- |
+| Most-reported crossings           | Top crossings by report count, labeled Downtown / Private / Other |
+| Reports by hour of day            | 24-bar SVG histogram; peak hour highlighted                       |
+| Reports by day of week            | Which days have the most reports                                  |
+| Reports by month                  | Seasonal pattern across all years                                 |
+| How long blockages lasted         | Duration bucket distribution (0-15 min through 8+ hr)             |
+| Reported reasons                  | Top 5 reasons given by reporters                                  |
+| When reports cluster (day x hour) | 7x24 likelihood heatmap (Mon-Sun by 0-23 hr)                      |
 
 The "Chance a train is blocking downtown right now" gauge at the top of the sidebar
 blends the hourly frequency from the history with a day-of-week factor. It refreshes
@@ -102,13 +102,13 @@ farther detectors carry wider error bars.
 
 The five key detectors and their heads-up ranges to downtown (MP 215.5):
 
-| ID | Location | MP | Direction | Dist (mi) | Heads-up range |
-|---|---|---|---|---|---|
-| 10701 | Mission | 221.9 | westbound | 6.4 | ~10-15 min |
-| 10702 | Rieth | 211.1 | eastbound | 4.4 | ~7-11 min |
-| 10703 | Rieth | 207.1 | eastbound | 8.4 | ~13-20 min |
-| 10704 | Echo | 194.9 | eastbound | 20.6 | ~31-49 min |
-| 10700 | Bonifer | 240.7 | westbound | 25.2 | ~38-60 min |
+| ID    | Location | MP    | Direction | Dist (mi) | Heads-up range |
+| ----- | -------- | ----- | --------- | --------- | -------------- |
+| 10701 | Mission  | 221.9 | westbound | 6.4       | ~10-15 min     |
+| 10702 | Rieth    | 211.1 | eastbound | 4.4       | ~7-11 min      |
+| 10703 | Rieth    | 207.1 | eastbound | 8.4       | ~13-20 min     |
+| 10704 | Echo     | 194.9 | eastbound | 20.6      | ~31-49 min     |
+| 10700 | Bonifer  | 240.7 | westbound | 25.2      | ~38-60 min     |
 
 **When a live detection store is configured**, the `/api/live` serverless function
 reads the ten most recent rows from a Supabase `detections` table and returns them to
@@ -288,6 +288,7 @@ the detector call (the same grammar as parse.py), and lets you submit the detect
 `/api/ingest`.
 
 Honest caveats:
+
 - It downloads roughly 30 MB on first use (the model is cached by the browser after that).
 - Accuracy on noisy scanner audio is hit or miss.
 - Submissions only reach the detection store when the app has Supabase and an ingest
@@ -299,27 +300,37 @@ fully without it.
 
 ## Run locally
 
+Needs [Bun](https://bun.com) 1.4 or newer.
+
 ```sh
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
-Open the localhost URL printed by Vite. The `/api/tiles`, `/api/live`, and `/api/ingest`
+Open the localhost URL printed by Vite. Vite is still the dev server and bundler; the
+scripts run it on the Bun runtime. The `/api/tiles`, `/api/live`, and `/api/ingest`
 proxies run as Vite dev middleware locally and as Vercel serverless functions in
 production, so behavior is identical in both environments. See `vite.config.js` for the
 middleware wiring.
 
 ```sh
-npm run build    # produces static output in dist/
+bun run build    # produces static output in dist/
+bun run check    # bun fmt --check, bun lint and the build
 ```
 
-Copy `.env.example` to `.env` and fill in values to test the live layer locally.
+`bun fmt` and `bun lint` only exist on Bun canary for now (`bun upgrade --canary`), so
+CI runs them on canary and keeps the build job on the pinned Bun release. Generated data
+in `public/data/` is left out of formatting (see `.prettierignore`).
+
+Copy `.env.example` to `.env` and fill in values to test the live layer locally. Bun
+loads `.env` into `process.env` for the dev proxies.
 
 ## Deploy
 
 This repo is connected to Vercel. Pushing to the default branch auto-deploys. To set
 it up fresh: import the repo into Vercel with the Vite framework preset. `vercel.json`
-pins the build and all three serverless functions. Set the Supabase and ingest env vars
+pins the install (`bun install --frozen-lockfile`), the build and all three serverless
+functions. Set the Supabase and ingest env vars
 as Vercel Project Environment Variables when you are ready to wire in live alerts.
 
 ## Caveats and safety

@@ -61,10 +61,7 @@ function fmtMinutes(n) {
 }
 
 function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 export function initEta(detectors) {
@@ -81,9 +78,7 @@ export function initEta(detectors) {
   }
 
   // Farthest heads-up first: the early-warning detectors at the top.
-  keyDetectors.sort(
-    (a, b) => Number(b.dist_to_downtown_mi) - Number(a.dist_to_downtown_mi)
-  );
+  keyDetectors.sort((a, b) => Number(b.dist_to_downtown_mi) - Number(a.dist_to_downtown_mi));
 
   const rows = keyDetectors
     .map((d) => {
@@ -105,11 +100,21 @@ export function initEta(detectors) {
       const label = escapeHtml(d.location) + ' (MP ' + escapeHtml(d.milepost) + ')';
       return (
         '<tr>' +
-        '<td>' + label + '</td>' +
-        '<td>' + dir + '</td>' +
-        '<td>' + (Number.isFinite(dist) ? dist.toFixed(1) : '--') + '</td>' +
-        '<td>' + headsUp + '</td>' +
-        '<td>' + note + '</td>' +
+        '<td>' +
+        label +
+        '</td>' +
+        '<td>' +
+        dir +
+        '</td>' +
+        '<td>' +
+        (Number.isFinite(dist) ? dist.toFixed(1) : '--') +
+        '</td>' +
+        '<td>' +
+        headsUp +
+        '</td>' +
+        '<td>' +
+        note +
+        '</td>' +
         '</tr>'
       );
     })

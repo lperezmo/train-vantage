@@ -13,9 +13,11 @@
 // which is a private crossing, not a downtown public street. We label each
 // crossing as Downtown, Private, or Outside so the chart is honest.
 function classifyCrossing(c) {
-  if (!c) return "Outside";
-  const street = String(c.street || "").trim().toUpperCase();
-  if (street === "PRIVATE") return "Private";
+  if (!c) return 'Outside';
+  const street = String(c.street || '')
+    .trim()
+    .toUpperCase();
+  if (street === 'PRIVATE') return 'Private';
   const lat = Number(c.lat);
   const lng = Number(c.lng);
   if (
@@ -26,52 +28,60 @@ function classifyCrossing(c) {
     lng <= -118.78 &&
     lng >= -118.86
   ) {
-    return "Downtown";
+    return 'Downtown';
   }
-  return "Outside";
+  return 'Outside';
 }
 
 function escapeHtml(s) {
-  return String(s == null ? "" : s).replace(/[&<>"']/g, function (ch) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
     return {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
     }[ch];
   });
 }
 
 function truncate(s, n) {
-  s = String(s == null ? "" : s);
+  s = String(s == null ? '' : s);
   if (s.length <= n) return s;
-  return s.slice(0, Math.max(0, n - 1)) + "…";
+  return s.slice(0, Math.max(0, n - 1)) + '…';
 }
 
 function titleCaseStreet(s) {
-  s = String(s == null ? "" : s).trim();
-  if (!s) return "";
+  s = String(s == null ? '' : s).trim();
+  if (!s) return '';
   // Leave clearly-uppercase labels readable: convert to Title Case.
-  return s
-    .toLowerCase()
-    .replace(/\b([a-z])/g, function (m, c) {
-      return c.toUpperCase();
-    });
+  return s.toLowerCase().replace(/\b([a-z])/g, function (m, c) {
+    return c.toUpperCase();
+  });
 }
 
-const DOW_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DOW_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 function hourLabel(h) {
   h = ((Number(h) % 24) + 24) % 24;
-  const ampm = h < 12 ? "AM" : "PM";
+  const ampm = h < 12 ? 'AM' : 'PM';
   let hh = h % 12;
   if (hh === 0) hh = 12;
-  return hh + " " + ampm;
+  return hh + ' ' + ampm;
 }
 
 function isArr(a) {
@@ -82,55 +92,56 @@ function isArr(a) {
 function barRowHtml(label, value, max, opts) {
   opts = opts || {};
   const pct = max > 0 ? Math.max(0, Math.min(100, (value / max) * 100)) : 0;
-  const color = opts.color || "var(--accent)";
-  const labTitle = opts.title ? ' title="' + escapeHtml(opts.title) + '"' : "";
+  const color = opts.color || 'var(--accent)';
+  const labTitle = opts.title ? ' title="' + escapeHtml(opts.title) + '"' : '';
   const num = opts.numText != null ? opts.numText : String(value);
   return (
     '<div class="bar-row">' +
-    '<span class="lab"' + labTitle + ">" + escapeHtml(label) + "</span>" +
+    '<span class="lab"' +
+    labTitle +
+    '>' +
+    escapeHtml(label) +
+    '</span>' +
     '<span class="track"><span class="val" style="width:' +
     pct.toFixed(1) +
-    "%;background:" +
+    '%;background:' +
     color +
     ';"></span></span>' +
-    '<span class="num">' + escapeHtml(num) + "</span>" +
-    "</div>"
+    '<span class="num">' +
+    escapeHtml(num) +
+    '</span>' +
+    '</div>'
   );
 }
 
 // Make a .chart block element with a heading and honest sub-caption.
 function chartBlock(title, sub, innerHtml) {
-  const el = document.createElement("div");
-  el.className = "chart";
+  const el = document.createElement('div');
+  el.className = 'chart';
   el.innerHTML =
-    "<h3>" + escapeHtml(title) + "</h3>" +
-    '<p class="sub">' + escapeHtml(sub) + "</p>" +
-    innerHtml;
+    '<h3>' + escapeHtml(title) + '</h3>' + '<p class="sub">' + escapeHtml(sub) + '</p>' + innerHtml;
   return el;
 }
 
 // ---- main export ---------------------------------------------------------
 
 export function initCharts(blocked) {
-  const summaryEl = document.getElementById("history-summary");
-  const chartsEl = document.getElementById("charts");
+  const summaryEl = document.getElementById('history-summary');
+  const chartsEl = document.getElementById('charts');
   if (!summaryEl && !chartsEl) return; // nothing to fill
 
   // Defensive: no data, or explicitly unavailable.
   if (!blocked || blocked.available === false) {
-    const reason =
-      blocked && blocked.reason ? String(blocked.reason) : "no reason given";
+    const reason = blocked && blocked.reason ? String(blocked.reason) : 'no reason given';
     if (summaryEl) {
       summaryEl.innerHTML =
-        "Historical data is not available right now (" +
-        escapeHtml(reason) +
-        ").";
+        'Historical data is not available right now (' + escapeHtml(reason) + ').';
     }
-    if (chartsEl) chartsEl.innerHTML = "";
+    if (chartsEl) chartsEl.innerHTML = '';
     return;
   }
 
-  if (chartsEl) chartsEl.innerHTML = "";
+  if (chartsEl) chartsEl.innerHTML = '';
 
   // ---- summary paragraph ----
   if (summaryEl) {
@@ -146,26 +157,26 @@ export function initCharts(blocked) {
     const max = top.reduce(function (m, c) {
       return Math.max(m, Number(c.count) || 0);
     }, 0);
-    let rows = "";
+    let rows = '';
     top.forEach(function (c) {
       const kind = classifyCrossing(c);
       const color =
-        kind === "Downtown"
-          ? "var(--warning)"
-          : kind === "Private"
-          ? "var(--muted)"
-          : "var(--accent)";
-      const niceStreet = titleCaseStreet(c.street) || "(unknown)";
+        kind === 'Downtown'
+          ? 'var(--warning)'
+          : kind === 'Private'
+            ? 'var(--muted)'
+            : 'var(--accent)';
+      const niceStreet = titleCaseStreet(c.street) || '(unknown)';
       const label = truncate(niceStreet, 14);
       rows += barRowHtml(label, Number(c.count) || 0, max, {
         color: color,
-        title: niceStreet + " (" + kind + ")",
+        title: niceStreet + ' (' + kind + ')',
       });
     });
     const block = chartBlock(
-      "Most-reported crossings",
-      "Self-reported FRA reports by crossing. Orange = downtown public; gray = a private crossing east of town; blue = other public.",
-      rows
+      'Most-reported crossings',
+      'Self-reported FRA reports by crossing. Orange = downtown public; gray = a private crossing east of town; blue = other public.',
+      rows,
     );
     chartsEl.appendChild(block);
   }
@@ -179,12 +190,10 @@ export function initCharts(blocked) {
     const peakHour = byHour.indexOf(max);
     chartsEl.appendChild(
       chartBlock(
-        "Reports by hour of day",
-        "When reports come in (local time). Peak is around " +
-          hourLabel(peakHour) +
-          ".",
-        hourSvg(byHour, max)
-      )
+        'Reports by hour of day',
+        'When reports come in (local time). Peak is around ' + hourLabel(peakHour) + '.',
+        hourSvg(byHour, max),
+      ),
     );
   }
 
@@ -194,19 +203,19 @@ export function initCharts(blocked) {
     const max = dow.reduce(function (m, v) {
       return Math.max(m, Number(v) || 0);
     }, 0);
-    let rows = "";
+    let rows = '';
     dow.forEach(function (v, i) {
       rows += barRowHtml(DOW_LABELS[i], Number(v) || 0, max, {
-        color: "var(--accent)",
+        color: 'var(--accent)',
       });
     });
     const peakIdx = dow.indexOf(max);
     chartsEl.appendChild(
       chartBlock(
-        "Reports by day of week",
-        "Busiest reporting day is " + DOW_LABELS[peakIdx] + ".",
-        rows
-      )
+        'Reports by day of week',
+        'Busiest reporting day is ' + DOW_LABELS[peakIdx] + '.',
+        rows,
+      ),
     );
   }
 
@@ -216,18 +225,14 @@ export function initCharts(blocked) {
     const max = month.reduce(function (m, v) {
       return Math.max(m, Number(v) || 0);
     }, 0);
-    let rows = "";
+    let rows = '';
     month.forEach(function (v, i) {
       rows += barRowHtml(MONTH_LABELS[i], Number(v) || 0, max, {
-        color: "var(--accent-2)",
+        color: 'var(--accent-2)',
       });
     });
     chartsEl.appendChild(
-      chartBlock(
-        "Reports by month",
-        "Seasonal pattern across all years on record.",
-        rows
-      )
+      chartBlock('Reports by month', 'Seasonal pattern across all years on record.', rows),
     );
   }
 
@@ -237,18 +242,14 @@ export function initCharts(blocked) {
     const max = durs.reduce(function (m, d) {
       return Math.max(m, Number(d.count) || 0);
     }, 0);
-    let rows = "";
+    let rows = '';
     durs.forEach(function (d) {
-      rows += barRowHtml(String(d.label || ""), Number(d.count) || 0, max, {
-        color: "var(--accent)",
+      rows += barRowHtml(String(d.label || ''), Number(d.count) || 0, max, {
+        color: 'var(--accent)',
       });
     });
     chartsEl.appendChild(
-      chartBlock(
-        "How long blockages lasted",
-        "Reported duration of each blockage.",
-        rows
-      )
+      chartBlock('How long blockages lasted', 'Reported duration of each blockage.', rows),
     );
   }
 
@@ -259,20 +260,20 @@ export function initCharts(blocked) {
     const max = top.reduce(function (m, r) {
       return Math.max(m, Number(r.count) || 0);
     }, 0);
-    let rows = "";
+    let rows = '';
     top.forEach(function (r) {
-      const full = String(r.reason || "");
+      const full = String(r.reason || '');
       rows += barRowHtml(truncate(full, 16), Number(r.count) || 0, max, {
-        color: "var(--muted)",
+        color: 'var(--muted)',
         title: full,
       });
     });
     chartsEl.appendChild(
       chartBlock(
-        "Reported reasons",
-        "What the reporter said was happening. Most are a stationary train.",
-        rows
-      )
+        'Reported reasons',
+        'What the reporter said was happening. Most are a stationary train.',
+        rows,
+      ),
     );
   }
 
@@ -281,10 +282,10 @@ export function initCharts(blocked) {
   if (heat && isArr(heat.values) && heat.values.length === 168) {
     chartsEl.appendChild(
       chartBlock(
-        "When reports cluster (day x hour)",
-        "Each cell is a day-of-week and hour. Darker red = more reports over all years.",
-        heatGridHtml(heat.values)
-      )
+        'When reports cluster (day x hour)',
+        'Each cell is a day-of-week and hour. Darker red = more reports over all years.',
+        heatGridHtml(heat.values),
+      ),
     );
   }
 }
@@ -294,52 +295,51 @@ export function initCharts(blocked) {
 function buildSummaryHtml(blocked) {
   const total = Number(blocked.row_count) || 0;
   const span = blocked.date_span || {};
-  const minYear = span.min ? String(span.min).slice(0, 4) : "?";
-  const maxYear = span.max ? String(span.max).slice(0, 4) : "?";
+  const minYear = span.min ? String(span.min).slice(0, 4) : '?';
+  const maxYear = span.max ? String(span.max).slice(0, 4) : '?';
 
   // Top downtown public crossing (skip private/outside for the headline).
   const byCrossing = isArr(blocked.by_crossing) ? blocked.by_crossing : [];
   let topDowntown = null;
   for (let i = 0; i < byCrossing.length; i++) {
-    if (classifyCrossing(byCrossing[i]) === "Downtown") {
+    if (classifyCrossing(byCrossing[i]) === 'Downtown') {
       topDowntown = byCrossing[i];
       break;
     }
   }
 
   // Peak hours from by_hour.
-  let peakHourText = "";
+  let peakHourText = '';
   const byHour = isArr(blocked.by_hour) ? blocked.by_hour : [];
   if (byHour.length === 24) {
     const max = byHour.reduce(function (m, v) {
       return Math.max(m, Number(v) || 0);
     }, 0);
     const peak = byHour.indexOf(max);
-    peakHourText =
-      " Reports peak around <strong>" + escapeHtml(hourLabel(peak)) + "</strong>.";
+    peakHourText = ' Reports peak around <strong>' + escapeHtml(hourLabel(peak)) + '</strong>.';
   }
 
-  let topText = "";
+  let topText = '';
   if (topDowntown) {
     topText =
-      " The most-reported downtown public crossing is <strong>" +
+      ' The most-reported downtown public crossing is <strong>' +
       escapeHtml(titleCaseStreet(topDowntown.street)) +
-      "</strong> (<strong>" +
+      '</strong> (<strong>' +
       (Number(topDowntown.count) || 0) +
-      "</strong> reports).";
+      '</strong> reports).';
   }
 
   return (
-    "<strong>" +
+    '<strong>' +
     total +
-    "</strong> self-reported blocked-crossing reports near Pendleton, from <strong>" +
+    '</strong> self-reported blocked-crossing reports near Pendleton, from <strong>' +
     escapeHtml(minYear) +
-    "</strong> to <strong>" +
+    '</strong> to <strong>' +
     escapeHtml(maxYear) +
-    "</strong>." +
+    '</strong>.' +
     topText +
     peakHourText +
-    " These are unverified public reports, shown for historical patterns only, not live train status."
+    ' These are unverified public reports, shown for historical patterns only, not live train status.'
   );
 }
 
@@ -357,14 +357,14 @@ function hourSvg(values, max) {
   const barW = (W - (n - 1) * gap) / n;
   const usableH = H - padBottom - padTop;
 
-  let bars = "";
+  let bars = '';
   for (let h = 0; h < n; h++) {
     const v = Number(values[h]) || 0;
     const bh = max > 0 ? (v / max) * usableH : 0;
     const x = h * (barW + gap);
     const y = padTop + (usableH - bh);
     const isPeak = v === max && max > 0;
-    const fill = isPeak ? "var(--warning)" : "var(--accent)";
+    const fill = isPeak ? 'var(--warning)' : 'var(--accent)';
     bars +=
       '<rect x="' +
       x.toFixed(2) +
@@ -378,12 +378,12 @@ function hourSvg(values, max) {
       fill +
       '"><title>' +
       hourLabel(h) +
-      ": " +
+      ': ' +
       v +
-      " reports</title></rect>";
+      ' reports</title></rect>';
   }
 
-  let axis = "";
+  let axis = '';
   [0, 6, 12, 18].forEach(function (h) {
     const x = h * (barW + gap) + barW / 2;
     axis +=
@@ -393,18 +393,18 @@ function hourSvg(values, max) {
       (H - 3) +
       '" text-anchor="middle" class="heat-axis" fill="var(--muted)" font-size="8">' +
       hourLabel(h) +
-      "</text>";
+      '</text>';
   });
 
   return (
     '<svg viewBox="0 0 ' +
     W +
-    " " +
+    ' ' +
     H +
     '" role="img" aria-label="Reports by hour of day">' +
     bars +
     axis +
-    "</svg>"
+    '</svg>'
   );
 }
 
@@ -412,7 +412,7 @@ function hourSvg(values, max) {
 
 function heatColor(v, max) {
   // Interpolate panel -> warning -> danger as the count rises.
-  if (!(max > 0) || v <= 0) return "var(--panel)";
+  if (!(max > 0) || v <= 0) return 'var(--panel)';
   const t = Math.min(1, v / max);
   // panel ~ (20,27,34); warning ~ (245,166,35); danger ~ (239,68,68)
   const panel = [20, 27, 34];
@@ -430,7 +430,7 @@ function heatColor(v, max) {
     g = warning[1] + (danger[1] - warning[1]) * u;
     b = warning[2] + (danger[2] - warning[2]) * u;
   }
-  return "rgb(" + Math.round(r) + "," + Math.round(g) + "," + Math.round(b) + ")";
+  return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
 }
 
 function heatGridHtml(values) {
@@ -443,15 +443,14 @@ function heatGridHtml(values) {
 
   // Layout: one row label column + 24 hour columns, then a 7-row data grid.
   // We build it as a single grid: 25 columns (label + 24 hours).
-  let html =
-    '<div class="heat-grid" style="grid-template-columns:18px repeat(24,1fr);">';
+  let html = '<div class="heat-grid" style="grid-template-columns:18px repeat(24,1fr);">';
 
   for (let d = 0; d < 7; d++) {
     // Row label (day initial).
     html +=
       '<div class="heat-axis" style="display:flex;align-items:center;justify-content:center;">' +
       DOW_LABELS[d][0] +
-      "</div>";
+      '</div>';
     for (let h = 0; h < 24; h++) {
       const v = Number(values[d * 24 + h]) || 0;
       const color = heatColor(v, max);
@@ -459,24 +458,23 @@ function heatGridHtml(values) {
         '<div class="heat-cell" style="background:' +
         color +
         ';" title="' +
-        escapeHtml(DOW_LABELS[d] + " " + hourLabel(h) + ": " + v + " reports") +
+        escapeHtml(DOW_LABELS[d] + ' ' + hourLabel(h) + ': ' + v + ' reports') +
         '"></div>';
     }
   }
 
-  html += "</div>";
+  html += '</div>';
 
   // Hour axis under the grid (0, 6, 12, 18 aligned to columns).
   html +=
     '<div class="heat-grid" style="grid-template-columns:18px repeat(24,1fr);margin-top:3px;">' +
     '<div></div>';
   for (let h = 0; h < 24; h++) {
-    let lab = "";
+    let lab = '';
     if (h === 0 || h === 6 || h === 12 || h === 18) lab = String(h);
-    html +=
-      '<div class="heat-axis" style="text-align:center;">' + lab + "</div>";
+    html += '<div class="heat-axis" style="text-align:center;">' + lab + '</div>';
   }
-  html += "</div>";
+  html += '</div>';
 
   return html;
 }
