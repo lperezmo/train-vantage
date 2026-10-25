@@ -318,8 +318,9 @@ bun run build    # produces static output in dist/
 bun run check    # bun fmt --check, bun lint and the build
 ```
 
-`bun fmt` and `bun lint` only exist on Bun canary for now (`bun upgrade --canary`), so
-CI runs them on canary and keeps the build job on the pinned Bun release. Generated data
+`bun fmt` ships in Bun 1.4.4, but `bun lint` only exists on Bun canary for now
+(`bun upgrade --canary`), so CI runs both on canary and keeps the build job on the
+pinned Bun release. Generated data
 in `public/data/` is left out of formatting (see `.prettierignore`).
 
 Copy `.env.example` to `.env` and fill in values to test the live layer locally. Bun
